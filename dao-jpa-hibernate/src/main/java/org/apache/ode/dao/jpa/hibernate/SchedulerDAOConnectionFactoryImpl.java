@@ -23,6 +23,7 @@ import java.util.Properties;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
 
@@ -33,7 +34,6 @@ import org.apache.ode.dao.jpa.scheduler.SchedulerDAOConnectionImpl;
 import org.apache.ode.dao.scheduler.SchedulerDAOConnection;
 import org.apache.ode.dao.scheduler.SchedulerDAOConnectionFactory;
 import org.apache.ode.il.config.OdeConfigProperties;
-import org.hibernate.ejb.HibernatePersistence;
 
 /**
 
@@ -46,22 +46,17 @@ public class SchedulerDAOConnectionFactoryImpl implements SchedulerDAOConnection
     DataSource _ds;
     JpaOperator _operator = new JpaOperatorImpl();
 
-    @Override
     public void init(Properties odeConfig, TransactionManager txm, Object env) {
         this._txm = txm;
         this._ds = (DataSource) env;
         Map emfProperties = HibernateUtil.buildConfig(OdeConfigProperties.PROP_DAOCF_SCHEDULER + ".", odeConfig, _txm, _ds);
-
-        HibernatePersistence p = new HibernatePersistence();
-
-        _emf = p.createEntityManagerFactory("ode-scheduler", emfProperties);
+        _emf = Persistence.createEntityManagerFactory("ode-scheduler", emfProperties);
     }
 
-    @Override
     public SchedulerDAOConnection getConnection() {
         final ThreadLocal<SchedulerDAOConnectionImpl> currentConnection = SchedulerDAOConnectionImpl.getThreadLocal();
 
-        SchedulerDAOConnectionImpl conn = currentConnection.get();
+        SchedulerDAOConnectionImpl conn = (SchedulerDAOConnectionImpl) currentConnection.get();
         if (conn != null && HibernateUtil.isOpen(conn)) {
             return conn;
         } else {
@@ -72,7 +67,6 @@ public class SchedulerDAOConnectionFactoryImpl implements SchedulerDAOConnection
         }
     }
 
-    @Override
     public void shutdown() {
         _emf.close();
     }

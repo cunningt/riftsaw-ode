@@ -36,7 +36,7 @@ import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathFactoryConfigurationException;
 
 import net.sf.saxon.om.Name11Checker;
-import net.sf.saxon.om.NamespaceConstant;
+import net.sf.saxon.lib.NamespaceConstant;
 import net.sf.saxon.xpath.XPathEvaluator;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 

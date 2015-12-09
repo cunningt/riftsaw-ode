@@ -46,7 +46,7 @@ public class XsdTypesTest extends TestCase {
         JaxpVariableResolver jvr = new JaxpVariableResolver(null, null, xpf.getConfiguration());
         Object o = jvr.getSimpleContent(DOMUtils.stringToDOM("<temporary-simple-type-wrapper></temporary-simple-type-wrapper>"), QName.valueOf("{http://www.w3.org/2001/XMLSchema}dateTime"));
         __log.debug(o);
-        assertTrue(o instanceof EmptySequence); //.toString().equals("")); - changed behaviour from saxon 9.1.0.8 to 9.2.1.5
     }
 
 }
+

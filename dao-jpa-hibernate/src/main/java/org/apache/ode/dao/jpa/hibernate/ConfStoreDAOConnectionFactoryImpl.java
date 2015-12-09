@@ -38,7 +38,6 @@ import org.apache.ode.il.config.OdeConfigProperties;
 
  */
 public class ConfStoreDAOConnectionFactoryImpl implements ConfStoreDAOConnectionFactory {
-  
   static final Log __log = LogFactory.getLog(ConfStoreDAOConnectionFactoryImpl.class);
   EntityManagerFactory _emf;
   TransactionManager _txm;

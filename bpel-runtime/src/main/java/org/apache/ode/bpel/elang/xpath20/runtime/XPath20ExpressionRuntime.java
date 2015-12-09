@@ -36,6 +36,7 @@ import javax.xml.xpath.XPathFactory;
 import net.sf.saxon.Configuration;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.DurationValue;
+import net.sf.saxon.xpath.XPathExpressionImpl;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 
 import org.apache.commons.logging.Log;
@@ -232,6 +233,8 @@ public class XPath20ExpressionRuntime implements ExpressionLanguageRuntime {
     }
 
     private Object evaluate(OExpression cexp, EvaluationContext ctx, QName type) throws FaultException, EvaluationException {
+        Node contextNode = null;
+        XPathExpression expr = null;
         try {
             OXPath20ExpressionBPEL20 oxpath20 = ((OXPath20ExpressionBPEL20) cexp);
 
@@ -242,8 +245,8 @@ public class XPath20ExpressionRuntime implements ExpressionLanguageRuntime {
             xpe.setXPathVariableResolver(varResolver);
             xpe.setNamespaceContext(oxpath20.namespaceCtx);
             String xpath = ((OXPath10Expression)cexp).xpath;
-            XPathExpression expr = xpe.compile(xpath);
-            Node contextNode = ctx.getRootNode();
+            expr = xpe.compile(xpath);
+            contextNode = ctx.getRootNode();
             if (contextNode == null) {
                 contextNode = DOMUtils.newDocument();
             }
@@ -282,8 +285,12 @@ public class XPath20ExpressionRuntime implements ExpressionLanguageRuntime {
             }
             return evalResult;
         } catch (XPathExpressionException e) {
+                try {
+                    XPathExpressionImpl impl = (XPathExpressionImpl) expr;
+                    return impl.evaluate(contextNode);
+                } catch (Exception e2) {
             // Extracting the real cause from all this wrapping isn't a simple task
-            Throwable cause = e.getCause() != null ? e.getCause() : e;
+            Throwable cause = e2.getCause() != null ? e2.getCause() : e;
             if (cause instanceof XPathException) {
                 Throwable th = ((XPathException)cause).getException();
                 if (th != null) {
@@ -292,12 +299,18 @@ public class XPath20ExpressionRuntime implements ExpressionLanguageRuntime {
                 }
             }
             throw new EvaluationException("Error while executing an XPath expression: " + cause.toString(), cause);
+            }
         } catch (WrappedResolverException wre) {
         	 __log.debug("Could not evaluate expression because of ", wre);
             throw (FaultException)wre.getCause();
         } catch (Throwable t) {
-        	 __log.debug("Could not evaluate expression because of ", t);
-            throw new EvaluationException("Error while executing an XPath expression: ", t);
+                try {
+                    XPathExpressionImpl impl = (XPathExpressionImpl) expr;
+                    return impl.evaluate(contextNode);
+                } catch (Exception t2) {
+                   __log.debug("Could not evaluate expression because of ", t);
+                   throw new EvaluationException("Error while executing an XPath expression: ", t);
+                }
         }
     }
 }

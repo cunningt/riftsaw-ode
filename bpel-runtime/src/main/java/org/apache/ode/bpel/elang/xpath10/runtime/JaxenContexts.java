@@ -27,7 +27,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.transform.dom.DOMSource;
 
-import net.sf.saxon.dom.NodeWrapper;
+import net.sf.saxon.dom.DOMNodeWrapper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -315,8 +315,8 @@ class JaxenContexts implements FunctionContext, VariableContext {
                                             "element node."));
                     varElmt = (Element) elmts.get(0);
                 } else {
-                    if (args.get(1) instanceof NodeWrapper)
-                        varElmt = (Element) ((NodeWrapper)args.get(1)).getUnderlyingNode();
+                    if (args.get(1) instanceof DOMNodeWrapper)
+                        varElmt = (Element) ((DOMNodeWrapper)args.get(1)).getUnderlyingNode();
                     else varElmt = (Element) args.get(1);
                     
 //                    varElmt = (Element) args.get(1);

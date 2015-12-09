@@ -47,11 +47,11 @@ import javax.xml.xquery.XQStaticContext;
 
 import net.sf.saxon.Configuration;
 import net.sf.saxon.om.Item;
-import net.sf.saxon.om.Validation;
-//import net.sf.saxon.trans.DynamicError;
+import net.sf.saxon.lib.Validation;
 import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.value.AtomicValue;
 import net.sf.saxon.value.DurationValue;
-import net.sf.saxon.value.Value;
+import net.sf.saxon.value.SingletonItem;
 import net.sf.saxon.xqj.SaxonXQConnection;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 import net.sf.saxon.xqj.SaxonXQItem;
@@ -371,21 +371,16 @@ public class XQuery10ExpressionRuntime implements ExpressionLanguageRuntime {
             	// Evaluate referenced variable
                 Object value = variableResolver.resolveVariable(variable);
                 
-                 if (value instanceof Value) {
+                 if (value instanceof AtomicValue) {
                      SaxonXQConnection saxonConn = (SaxonXQConnection) xqconn;
-                     try {
-                         Item item = ((Value) value).asItem();
-                         if (item == null) {
-                             exp.bindSequence(variable, xqconn.createSequence(Collections.EMPTY_LIST.iterator()));
-                         } else {
-                             XQItem item2 = new SaxonXQItem(item, saxonConn);
-                             exp.bindItem(variable, item2);
-                         }
-                     } catch (XPathException e) {
-                         __log.warn("", e);
+                     Item item = ((SingletonItem)value).asItem();
+                     if (item == null) {
+                         exp.bindSequence(variable, xqconn.createSequence(Collections.EMPTY_LIST.iterator()));
+                     } else {
+                         XQItem item2 = new SaxonXQItem(item, saxonConn);
+                         exp.bindItem(variable, item2);
                      }
                  } else {
-                     
                      if (value instanceof Date) {
                          Date d = (Date) value;
                          value = org.apache.ode.utils.ISO8601DateParser.format(d);
@@ -450,20 +445,6 @@ public class XQuery10ExpressionRuntime implements ExpressionLanguageRuntime {
         } catch (XQException xqe) {
             // Extracting the real cause from all this wrapping isn't a simple task
             Throwable cause = (xqe.getCause() != null) ? xqe.getCause() : xqe;
-
-            /*
-            if (cause instanceof DynamicError) {
-                Throwable th = ((DynamicError) cause).getException();
-
-                if (th != null) {
-                    cause = th;
-
-                    if (cause.getCause() != null) {
-                        cause = cause.getCause();
-                    }
-                }
-            }
-            */
 
             throw new EvaluationException(
                 "Error while executing an XQuery expression: " + cause.toString(), cause);

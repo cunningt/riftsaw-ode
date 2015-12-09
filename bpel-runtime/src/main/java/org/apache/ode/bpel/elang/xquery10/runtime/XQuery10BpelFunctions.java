@@ -19,7 +19,7 @@
 
 package org.apache.ode.bpel.elang.xquery10.runtime;
 
-import net.sf.saxon.dom.NodeWrapper;
+import net.sf.saxon.dom.DOMNodeWrapper;
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.om.Item;
 
@@ -38,7 +38,7 @@ import javax.xml.xpath.XPathFunctionException;
 
 
 /**
- * XQuery-Friendly definition of BPEL functions, which 
+ * XQuery-Friendly definition of BPEL functions, which
  * delegates calls to the JAXP-based function resolver
  */
 public class XQuery10BpelFunctions {
@@ -53,7 +53,7 @@ public class XQuery10BpelFunctions {
             Constants.EXT_FUNCTION_DOXSLTRANSFORM);
 
     /**
-     * WS-BPEL getVariableProperty function 
+     * WS-BPEL getVariableProperty function
      *
      * @param context context
      * @param variableName variableName
@@ -74,7 +74,7 @@ public class XQuery10BpelFunctions {
     }
 
     /**
-     * WS-BPEL getVariableData function 
+     * WS-BPEL getVariableData function
      *
      * @param context context
      * @param variableName variableName
@@ -98,7 +98,7 @@ public class XQuery10BpelFunctions {
     }
 
     /**
-     * WS-BPEL doXslTransform function 
+     * WS-BPEL doXslTransform function
      *
      * @param context context
      * @param xslUri xslUri
@@ -119,7 +119,7 @@ public class XQuery10BpelFunctions {
     }
 
     /**
-     * WS-BPEL getLinkStatus function 
+     * WS-BPEL getLinkStatus function
      *
      * @param context context
      * @param linkName linkName
@@ -150,8 +150,8 @@ public class XQuery10BpelFunctions {
         JaxpFunctionResolver funcResolver = null;
         Item item = context.getCurrentIterator().current();
 
-        if (item instanceof NodeWrapper) {
-            Node node = (Node) ((NodeWrapper) item).getUnderlyingNode();
+        if (item instanceof DOMNodeWrapper) {
+            Node node = (Node) ((DOMNodeWrapper) item).getUnderlyingNode();
 
             if (node != null) {
                 funcResolver = (JaxpFunctionResolver) node.getUserData(USER_DATA_KEY_FUNCTION_RESOLVER);
@@ -162,7 +162,7 @@ public class XQuery10BpelFunctions {
     }
 
     /**
-     * Evaluates function against arguments passed by XQuery 
+     * Evaluates function against arguments passed by XQuery
      *
      * @param function function
      * @param arguments arguments

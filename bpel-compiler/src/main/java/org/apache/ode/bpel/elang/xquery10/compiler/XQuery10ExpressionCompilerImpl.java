@@ -41,7 +41,7 @@ import javax.xml.xquery.XQSequence;
 import javax.xml.xquery.XQStaticContext;
 
 import net.sf.saxon.Configuration;
-import net.sf.saxon.om.Validation;
+import net.sf.saxon.lib.Validation;
 import net.sf.saxon.xqj.SaxonXQConnection;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 

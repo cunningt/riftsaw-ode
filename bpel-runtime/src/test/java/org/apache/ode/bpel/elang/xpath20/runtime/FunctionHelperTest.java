@@ -22,7 +22,7 @@ package org.apache.ode.bpel.elang.xpath20.runtime;
 import junit.framework.TestCase;
 import net.sf.saxon.Configuration;
 import net.sf.saxon.dom.DocumentWrapper;
-import net.sf.saxon.dom.NodeWrapper;
+import net.sf.saxon.dom.DOMNodeWrapper;
 import org.apache.ode.utils.DOMUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Text;
@@ -52,7 +52,7 @@ public class FunctionHelperTest extends TestCase {
         inputs.add(Arrays.asList(textNode));
 
         DocumentWrapper dw = new DocumentWrapper(doc, "", new Configuration());
-        NodeWrapper nw = dw.wrap(textNode);
+        DOMNodeWrapper nw = dw.wrap(textNode);
         inputs.add(nw);
 
         for (int i = 0; i < inputs.size(); i++) {

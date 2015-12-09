@@ -28,9 +28,10 @@ import javax.xml.xpath.XPathExpression;
 import net.sf.saxon.expr.AxisExpression;
 import net.sf.saxon.expr.Expression;
 import net.sf.saxon.expr.ItemChecker;
-import net.sf.saxon.expr.PathExpression;
+import net.sf.saxon.expr.SlashExpression;
+
 import net.sf.saxon.expr.VariableReference;
-import net.sf.saxon.om.Axis;
+import net.sf.saxon.s9api.Axis;
 import net.sf.saxon.om.NamePool;
 import net.sf.saxon.pattern.NameTest;
 import net.sf.saxon.pattern.NodeKindTest;
@@ -58,8 +59,8 @@ public class XPath20ExpressionModifier {
     /**
      * Creates a new XPath20ExpressionModifier object.
      *
-     * @param contextUris 
-     * @param namePool 
+     * @param contextUris
+     * @param namePool
      */
     public XPath20ExpressionModifier(NSContext contextUris, NamePool namePool) {
         this.contextUris = contextUris;
@@ -68,11 +69,11 @@ public class XPath20ExpressionModifier {
 
     /**
      * Insert nodes into the specified XPath expression wherever
-     * required To be precise, an node is added to its parent if: 
-     * a) the node is an element... 
-     * b) that corresponds to an step... 
-     * c) that has a child axis... 
-     * d) whose parent had no children with its name... 
+     * required To be precise, an node is added to its parent if:
+     * a) the node is an element...
+     * b) that corresponds to an step...
+     * c) that has a child axis...
+     * d) whose parent had no children with its name...
      * e) and all preceding steps are element name tests.
      *
      * @param xpathExpr
@@ -98,12 +99,8 @@ public class XPath20ExpressionModifier {
 
         Expression subExpr = (Expression) subExpressions.next();
 
-        if (!(subExpr instanceof PathExpression)) {
-            return;
-        }
-
         Document document = contextNode.getOwnerDocument();
-        PathExpression pathExpr = (PathExpression) subExpr;
+        SlashExpression pathExpr = (SlashExpression) subExpr;
         Expression step = pathExpr.getFirstStep();
 
         while (step != null) {
@@ -120,12 +117,12 @@ public class XPath20ExpressionModifier {
 
                 QName childName = getQualifiedName(nameTest.getFingerprint(),
                         namePool, contextUris);
-                
-                if (Axis.CHILD == axisExpr.getAxis()) {
+
+                if (Axis.CHILD.getAxisNumber() == axisExpr.getAxis()) {
                     if (NodeKindTest.ELEMENT.getNodeKindMask() != nameTest.getNodeKindMask()) {
                         break;
                     }
-                	
+
                     NodeList children = ((Element) contextNode).getElementsByTagNameNS(childName.getNamespaceURI(),
                             childName.getLocalPart());
                     if ((children == null) || (children.getLength() == 0)) {
@@ -138,25 +135,22 @@ public class XPath20ExpressionModifier {
                     } else {
                         break;
                     }
-                } else if (Axis.ATTRIBUTE == axisExpr.getAxis()) {
+                } else if (Axis.ATTRIBUTE.getAxisNumber() == axisExpr.getAxis()) {
                     if (NodeKindTest.ATTRIBUTE.getNodeKindMask() != nameTest.getNodeKindMask()) {
                         break;
                     }
-                    
+
                     Attr attribute = ((Element) contextNode).getAttributeNodeNS(childName.getNamespaceURI(), childName.getLocalPart());
                     if (attribute == null) {
-                    	attribute = document.createAttributeNS(childName.getNamespaceURI(), childName.getLocalPart());
-                    	((Element) contextNode).setAttributeNode(attribute);
-                    	contextNode = attribute;
+                        attribute = document.createAttributeNS(childName.getNamespaceURI(), childName.getLocalPart());
+                        ((Element) contextNode).setAttributeNode(attribute);
+                        contextNode = attribute;
                     } else {
-                    	break;
+                        break;
                     }
-                	
                 } else {
-                	break;
+                        break;
                 }
-
-
             } else if (step instanceof ItemChecker) {
                 ItemChecker itemChecker = (ItemChecker) step;
                 Expression baseExpr = itemChecker.getBaseExpression();
@@ -171,8 +165,8 @@ public class XPath20ExpressionModifier {
             if (pathExpr != null) {
                 Expression remainingSteps = pathExpr.getRemainingSteps();
 
-                if (remainingSteps instanceof PathExpression) {
-                    pathExpr = (PathExpression) remainingSteps;
+                if (remainingSteps instanceof SlashExpression) {
+                    pathExpr = (SlashExpression) remainingSteps;
                     step = pathExpr.getFirstStep();
                 } else if (remainingSteps instanceof AxisExpression) {
                     pathExpr = null;

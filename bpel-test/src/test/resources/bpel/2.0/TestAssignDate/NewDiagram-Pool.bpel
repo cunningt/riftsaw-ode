@@ -51,7 +51,7 @@
         <bpel:to>$variable</bpel:to>
       </bpel:copy>
         <bpel:copy>
-          <bpel:from>$variable + xs:dayTimeDuration ("P1D")</bpel:from>
+          <bpel:from>xs:dateTime($variable) + xs:dayTimeDuration ("P1D")</bpel:from>
           <bpel:to>$variable</bpel:to>
         </bpel:copy>
     </bpel:assign>

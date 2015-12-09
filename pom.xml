@@ -8,7 +8,7 @@
     </description>
     <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
-    <version>3.2.4.Final</version>
+    <version>3.2.4-SNAPSHOT</version>
 
     <parent>
         <groupId>org.jboss.integration-platform</groupId>
@@ -85,10 +85,12 @@
 
     <properties>
     	<activity.monitor.model.version>1.2.3.Final-redhat-4</activity.monitor.model.version>
+        <version.net.sf.saxon>9.5.1-5</version.net.sf.saxon>
+        <version.xqj.classes>9.6.0-4</version.xqj.classes>
 
         <geronimo.version>2.0.1</geronimo.version>
         <geronimo.specs.jta.version>1.1</geronimo.specs.jta.version>
-	    <jmock.version>1.2.0</jmock.version>
+        <jmock.version>1.2.0</jmock.version>
         <commons.beanutils.version>1.8.2</commons.beanutils.version>
 
 	<!-- Leaving this version local, as upgrading the version would cause problems -->
@@ -97,6 +99,7 @@
 
 
     <modules>
+      <module>saxon-xqj</module>
       <module>agents</module>
       <module>utils</module>
       <module>jacob</module>
@@ -203,6 +206,17 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>${version.net.sf.saxon}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>${version.net.sf.saxon}</version>
+                <classifier>xqj</classifier>
+            </dependency>
 
             <!-- Imported dependencies -->
 	    <dependency>
@@ -213,6 +227,11 @@
 		<scope>import</scope>
 	    </dependency>
 
+            <dependency>
+                <groupId>org.jboss.soa.bpel</groupId>
+                <artifactId>riftsaw-saxon-xqj</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.jboss.soa.bpel</groupId>
                 <artifactId>riftsaw-agents</artifactId>

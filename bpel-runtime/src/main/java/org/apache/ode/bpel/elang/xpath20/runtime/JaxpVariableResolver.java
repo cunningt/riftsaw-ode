@@ -29,7 +29,6 @@ import net.sf.saxon.type.ValidationException;
 import net.sf.saxon.value.AtomicValue;
 import net.sf.saxon.value.EmptySequence;
 import net.sf.saxon.value.StringValue;
-import net.sf.saxon.value.Value;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -125,23 +124,19 @@ public class JaxpVariableResolver implements XPathVariableResolver {
         }
     }
 
-    public Value convertSimpleTypeToSaxon(QName type, String value) {
+    public AtomicValue convertSimpleTypeToSaxon(QName type, String value) {
         int fp = _config.getNamePool().allocate("", type.getNamespaceURI(), type.getLocalPart());
         SchemaType type2 = _config.getSchemaType(fp);
         if (type2 == null || !type2.isAtomicType()) {
             __log.warn("Can't find simple type " + type + " value " + value + " result: " + null);
             return null;
         } else {
-            try {
-                AtomicValue value2 = StringValue.convertStringToAtomicType(value, (AtomicType) type2, null).asAtomic();
+                StringValue sv = new StringValue(value);
+                AtomicValue value2 = sv.copyAsSubType((AtomicType) type2);
                 if (__log.isDebugEnabled()) {
                     __log.debug("converting " + type + " value " + value + " result: " + value2);
                 }
                 return value2;
-            } catch (ValidationException e) {
-                __log.debug("Can't convert " + value + " to " + type + " returning empty sequence");
-                return EmptySequence.getInstance();
-            }
         }
     }
 

@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import javax.xml.xpath.XPathFunction;
 import javax.xml.xpath.XPathFunctionException;
 
-import net.sf.saxon.dom.NodeWrapper;
+import net.sf.saxon.dom.DOMNodeWrapper;
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.om.Item;
 
@@ -149,8 +149,8 @@ public class XQuery10BpelFunctions {
         Item item = context.getCurrentIterator().current();
         XPathFunction function = null;
 
-        if (item instanceof NodeWrapper) {
-            Node node = (Node) ((NodeWrapper) item).getUnderlyingNode();
+        if (item instanceof DOMNodeWrapper) {
+            Node node = (Node) ((DOMNodeWrapper) item).getUnderlyingNode();
             JaxpFunctionResolver funcResolver = null;
             if (node != null) {
                 funcResolver = (JaxpFunctionResolver) node.getUserData(USER_DATA_KEY_FUNCTION_RESOLVER);

@@ -36,7 +36,7 @@ import javax.xml.xpath.XPathFunction;
 import javax.xml.xpath.XPathFunctionException;
 import javax.xml.xpath.XPathFunctionResolver;
 
-import net.sf.saxon.dom.NodeWrapper;
+import net.sf.saxon.dom.DOMNodeWrapper;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.DayTimeDurationValue;
 import net.sf.saxon.value.IntegerValue;
@@ -248,8 +248,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                                             "element node."));
                     varElmt = (Element) elmts.get(0);
                 } else {
-                    if (args.get(1) instanceof NodeWrapper)
-                        varElmt = (Element) ((NodeWrapper) args.get(1)).getUnderlyingNode();
+                    if (args.get(1) instanceof DOMNodeWrapper)
+                        varElmt = (Element) ((DOMNodeWrapper) args.get(1)).getUnderlyingNode();
                     else varElmt = (Element) args.get(1);
                 }
             } catch (ClassCastException e) {
@@ -284,8 +284,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                 for (int idx = 2; idx < args.size(); idx += 2) {
                     QName keyQName = _oxpath.namespaceCtx.derefQName((String) args.get(idx));
                     Object paramElmt;
-                    if (args.get(idx + 1) instanceof NodeWrapper) {
-                        Element tmpElmt = (Element) ((NodeWrapper) args.get(idx + 1)).getUnderlyingNode();
+                    if (args.get(idx + 1) instanceof DOMNodeWrapper) {
+                        Element tmpElmt = (Element) ((DOMNodeWrapper) args.get(idx + 1)).getUnderlyingNode();
                         Document paramDoc = DOMUtils.newDocument();
                         paramDoc.appendChild(paramDoc.importNode(tmpElmt, true));
                         paramElmt = paramDoc;
@@ -342,8 +342,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                                     "The bpws:domToString function MUST be passed a single " +
                                             "element node."));
                     varElmt = (Element) elmts.get(0);
-                } else if (args.get(0) instanceof NodeWrapper) {
-                    varElmt = (Element) ((NodeWrapper) args.get(0)).getUnderlyingNode();
+                } else if (args.get(0) instanceof DOMNodeWrapper) {
+                    varElmt = (Element) ((DOMNodeWrapper) args.get(0)).getUnderlyingNode();
                 } else if (args.get(0) instanceof Element) {
                     varElmt = (Element) args.get(0);
                 } else {
@@ -544,8 +544,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                                     "The bpws:insertInto function MUST be passed a single " +
                                             "element node."));
                     parentElmt = (Element) elmts.get(0);
-                } else if (args.get(0) instanceof NodeWrapper) {
-                    parentElmt = (Element) ((NodeWrapper) args.get(0)).getUnderlyingNode();
+                } else if (args.get(0) instanceof DOMNodeWrapper) {
+                    parentElmt = (Element) ((DOMNodeWrapper) args.get(0)).getUnderlyingNode();
                 } else if (args.get(0) instanceof Element) {
                     parentElmt = (Element) args.get(0);
                 } else {
@@ -554,8 +554,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                 position = Helper.extractInteger(args.get(1));
                 if (args.get(2) instanceof List) {
                     childNodes = (List) args.get(2);
-                } else if (args.get(2) instanceof NodeWrapper) {
-                    Node childElmt = (Node) ((NodeWrapper) args.get(2)).getUnderlyingNode();
+                } else if (args.get(2) instanceof DOMNodeWrapper) {
+                    Node childElmt = (Node) ((DOMNodeWrapper) args.get(2)).getUnderlyingNode();
                     childNodes = new ArrayList<Node>();
                     childNodes.add(childElmt);
                 } else if (args.get(2) instanceof Element) {
@@ -623,8 +623,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                     //                "The bpws:insertAfter function MUST be passed a single " +
                     //                        "element node."));
                     targetElmt = (Element) elmts.get(elmts.size() - 1);
-                } else if (childArg instanceof NodeWrapper) {
-                    targetElmt = (Element) ((NodeWrapper) childArg).getUnderlyingNode();
+                } else if (childArg instanceof DOMNodeWrapper) {
+                    targetElmt = (Element) ((DOMNodeWrapper) childArg).getUnderlyingNode();
                 } else if (childArg instanceof Element) {
                     targetElmt = (Element) childArg;
                 } else {
@@ -632,8 +632,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                 }
                 if (siblingsArg instanceof List) {
                     siblingNodes = (List<Node>) siblingsArg;
-                } else if (siblingsArg instanceof NodeWrapper) {
-                    Node childElmt = (Node) ((NodeWrapper) siblingsArg).getUnderlyingNode();
+                } else if (siblingsArg instanceof DOMNodeWrapper) {
+                    Node childElmt = (Node) ((DOMNodeWrapper) siblingsArg).getUnderlyingNode();
                     siblingNodes = new ArrayList<Node>();
                     siblingNodes.add(childElmt);
                 } else if (siblingsArg instanceof Element) {
@@ -700,8 +700,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                     //                "The bpws:insertBefore function MUST be passed a single " +
                     //                        "element node."));
                     targetElmt = (Element) elmts.get(0);
-                } else if (childArg instanceof NodeWrapper) {
-                    targetElmt = (Element) ((NodeWrapper) childArg).getUnderlyingNode();
+                } else if (childArg instanceof DOMNodeWrapper) {
+                    targetElmt = (Element) ((DOMNodeWrapper) childArg).getUnderlyingNode();
                 } else if (childArg instanceof Element) {
                     targetElmt = (Element) childArg;
                 } else {
@@ -709,8 +709,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                 }
                 if (siblingsArg instanceof List) {
                     siblingNodes = (List) siblingsArg;
-                } else if (siblingsArg instanceof NodeWrapper) {
-                    Node childElmt = (Node) ((NodeWrapper) siblingsArg).getUnderlyingNode();
+                } else if (siblingsArg instanceof DOMNodeWrapper) {
+                    Node childElmt = (Node) ((DOMNodeWrapper) siblingsArg).getUnderlyingNode();
                     siblingNodes = new ArrayList<Node>();
                     siblingNodes.add(childElmt);
                 } else if (siblingsArg instanceof Element) {
@@ -768,8 +768,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                                     "The bpws:insertAsFirstInto function MUST be passed a single " +
                                             "element node."));
                     targetElmt = (Element) elmts.get(0);
-                } else if (args.get(0) instanceof NodeWrapper) {
-                    targetElmt = (Element) ((NodeWrapper) args.get(0)).getUnderlyingNode();
+                } else if (args.get(0) instanceof DOMNodeWrapper) {
+                    targetElmt = (Element) ((DOMNodeWrapper) args.get(0)).getUnderlyingNode();
                 } else if (args.get(0) instanceof Element) {
                     targetElmt = (Element) args.get(0);
                 } else {
@@ -777,8 +777,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                 }
                 if (args.get(1) instanceof List) {
                     siblingNodes = (List) args.get(1);
-                } else if (args.get(1) instanceof NodeWrapper) {
-                    Node childElmt = (Node) ((NodeWrapper) args.get(1)).getUnderlyingNode();
+                } else if (args.get(1) instanceof DOMNodeWrapper) {
+                    Node childElmt = (Node) ((DOMNodeWrapper) args.get(1)).getUnderlyingNode();
                     siblingNodes = new ArrayList<Node>();
                     siblingNodes.add(childElmt);
                 } else if (args.get(1) instanceof Element) {
@@ -827,8 +827,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                                     "The bpws:insertAsLastInto function MUST be passed a single " +
                                             "element node."));
                     targetElmt = (Element) elmts.get(0);
-                } else if (args.get(0) instanceof NodeWrapper) {
-                    targetElmt = (Element) ((NodeWrapper) args.get(0)).getUnderlyingNode();
+                } else if (args.get(0) instanceof DOMNodeWrapper) {
+                    targetElmt = (Element) ((DOMNodeWrapper) args.get(0)).getUnderlyingNode();
                 } else if (args.get(0) instanceof Element) {
                     targetElmt = (Element) args.get(0);
                 } else {
@@ -836,8 +836,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                 }
                 if (args.get(1) instanceof List) {
                     siblingNodes = (List) args.get(1);
-                } else if (args.get(1) instanceof NodeWrapper) {
-                    Node childElmt = (Node) ((NodeWrapper) args.get(1)).getUnderlyingNode();
+                } else if (args.get(1) instanceof DOMNodeWrapper) {
+                    Node childElmt = (Node) ((DOMNodeWrapper) args.get(1)).getUnderlyingNode();
                     siblingNodes = new ArrayList<Node>();
                     siblingNodes.add(childElmt);
                 } else if (args.get(1) instanceof Element) {
@@ -887,8 +887,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                     //                "The bpws:delete function MUST be passed a single " +
                     //                        "element node."));
                     targetNodes.addAll(elmts);
-                } else if (delete instanceof NodeWrapper) {
-                    targetNodes.add((Element) ((NodeWrapper) delete).getUnderlyingNode());
+                } else if (delete instanceof DOMNodeWrapper) {
+                    targetNodes.add((Element) ((DOMNodeWrapper) delete).getUnderlyingNode());
                 } else if (delete instanceof Element) {
                     targetNodes.add((Element) delete);
                 } else {
@@ -961,8 +961,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                                     "The bpws:rename function MUST be passed a single " +
                                             "element node."));
                     targetElmt = (Element) elmts.get(0);
-                } else if (args.get(0) instanceof NodeWrapper) {
-                    targetElmt = (Element) ((NodeWrapper) args.get(0)).getUnderlyingNode();
+                } else if (args.get(0) instanceof DOMNodeWrapper) {
+                    targetElmt = (Element) ((DOMNodeWrapper) args.get(0)).getUnderlyingNode();
                 } else if (args.get(0) instanceof Element) {
                     targetElmt = (Element) args.get(0);
                 } else {
@@ -980,17 +980,17 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                             new FaultException(_oxpath.getOwner().constants.qnSelectionFailure,
                                     "The bpws:rename function MUST be passed a single " +
                                             "element node."));
-                    Element nameElmt = (Element) elmts.get(0);
+                        Element nameElmt = (Element) elmts.get(0);
                 	namespaceUri = nameElmt.getNamespaceURI();
                 	localName = nameElmt.getLocalName();
                 	prefix = nameElmt.getPrefix();
-                } else if (args.get(1) instanceof NodeWrapper) {
-                	Element nameElmt = (Element) ((NodeWrapper) args.get(1)).getUnderlyingNode();
+                } else if (args.get(1) instanceof DOMNodeWrapper) {
+                        Element nameElmt = (Element) ((DOMNodeWrapper) args.get(1)).getUnderlyingNode();
                 	namespaceUri = nameElmt.getNamespaceURI();
                 	localName = nameElmt.getLocalName();
                 	prefix = nameElmt.getPrefix();
                 } else if (args.get(1) instanceof Element) {
-                	Element nameElmt = (Element) args.get(1);
+                        Element nameElmt = (Element) args.get(1);
                 	namespaceUri = nameElmt.getNamespaceURI();
                 	localName = nameElmt.getLocalName();
                 	prefix = nameElmt.getPrefix();
@@ -1021,8 +1021,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                         namespaceUri = qNameValue.getNamespaceURI();
                         localName = qNameValue.getLocalName();
                         prefix = qNameValue.getPrefix();
-                    } else if (args.get(2) instanceof NodeWrapper) {
-                    	Element nameElmt = (Element) ((NodeWrapper) args.get(2)).getUnderlyingNode();
+                    } else if (args.get(2) instanceof DOMNodeWrapper) {
+                        Element nameElmt = (Element) ((DOMNodeWrapper) args.get(2)).getUnderlyingNode();
                     	namespaceUri = nameElmt.getNamespaceURI();
                     	localName = nameElmt.getLocalName();
                     	prefix = nameElmt.getPrefix();
@@ -1111,8 +1111,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                     } else if (elmts.get(0) instanceof String) {
                     	propertyName = new QName((String) elmts.get(0));
                     }
-                } else if (args.get(0) instanceof NodeWrapper) {
-                    targetElmt = (Element) ((NodeWrapper) args.get(0)).getUnderlyingNode();
+                } else if (args.get(0) instanceof DOMNodeWrapper) {
+                    targetElmt = (Element) ((DOMNodeWrapper) args.get(0)).getUnderlyingNode();
                 } else if (args.get(0) instanceof Element) {
                     targetElmt = (Element) args.get(0);
                 } else if (args.get(0) instanceof QNameValue) {
@@ -1175,8 +1175,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                     } else if (elmts.get(0) instanceof String) {
                     	argument = (String) elmts.get(0);
                     }
-                } else if (args.get(0) instanceof NodeWrapper) {
-                    targetElmt = (Element) ((NodeWrapper) args.get(0)).getUnderlyingNode();
+                } else if (args.get(0) instanceof DOMNodeWrapper) {
+                    targetElmt = (Element) ((DOMNodeWrapper) args.get(0)).getUnderlyingNode();
                 } else if (args.get(0) instanceof Element) {
                     targetElmt = (Element) args.get(0);
                 } else if (args.get(0) instanceof String)	{
@@ -1226,8 +1226,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                     } else if (elmts.get(0) instanceof String) {
                     	argument = (String) elmts.get(0);
                     }
-                } else if (args.get(0) instanceof NodeWrapper) {
-                    targetElmt = (Element) ((NodeWrapper) args.get(0)).getUnderlyingNode();
+                } else if (args.get(0) instanceof DOMNodeWrapper) {
+                    targetElmt = (Element) ((DOMNodeWrapper) args.get(0)).getUnderlyingNode();
                 } else if (args.get(0) instanceof Element) {
                     targetElmt = (Element) args.get(0);
                 } else if (args.get(0) instanceof String)	{
@@ -1342,7 +1342,7 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
          * The parameter could be:
          * <ol>
          * <li>a {@link java.util.List} containing exactly one {@link org.w3c.dom.Node}</li>
-         * <li>a {@link net.sf.saxon.dom.NodeWrapper}</li>
+         * <li>a {@link net.sf.saxon.dom.DOMNodeWrapper}</li>
          * <li>a {@link org.w3c.dom.Node}</li>
          * <li>or a {@link String}</li>
          * </ol>
@@ -1364,8 +1364,8 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
                     if (elmts.size() != 1)
                         throw new IllegalArgumentException("Parameter MUST point to a string, single element or text node.");
                     node = (Node) elmts.get(0);
-                } else if (arg instanceof NodeWrapper) {
-                    node = (Node) ((NodeWrapper) arg).getUnderlyingNode();
+                } else if (arg instanceof DOMNodeWrapper) {
+                    node = (Node) ((DOMNodeWrapper) arg).getUnderlyingNode();
                 } else if (arg instanceof Node) {
                     node = (Node) arg;
                 } else {
@@ -1390,7 +1390,7 @@ public class JaxpFunctionResolver implements XPathFunctionResolver {
          * The parameter could be:
          * <ol>
          * <li>a {@link java.util.List} containing exactly one {@link org.w3c.dom.Node}</li>
-         * <li>a {@link net.sf.saxon.dom.NodeWrapper}</li>
+         * <li>a {@link net.sf.saxon.dom.DOMNodeWrapper}</li>
          * <li>a {@link org.w3c.dom.Node}</li>
          * <li>a {@link String}</li>
          * <li>or an {@link Integer}</li>

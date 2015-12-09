@@ -19,6 +19,7 @@
 
 <process name="TestAssign"
          targetNamespace="http://ode/bpel/unit-testAssign1"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
          xmlns:ode="http://www.apache.org/ode/type/extension"
          xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
          xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
@@ -75,19 +76,19 @@
                 <to>$intVar2</to>
             </copy>
             <copy ignoreMissingFromData="yes" ignoreUninitializedFromVariable="yes">
-                <from>$intVar + 1</from>
+                <from>xs:int($intVar) + 1</from>
                 <to>$intVar</to>
             </copy>
             <copy ignoreMissingFromData="yes" ignoreUninitializedFromVariable="yes">
-                <from>$intVar + 1</from>
+                <from>xs:int($intVar) + 1</from>
                 <to variable="intVar"/>
             </copy>
             <copy ignoreMissingFromData="yes" ignoreUninitializedFromVariable="yes">
-                <from>$intVar = 5</from>
+                <from>xs:integer($intVar) = 5</from>
                 <to variable="boolVar"/>
             </copy>
             <copy ignoreMissingFromData="yes" ignoreUninitializedFromVariable="yes">
-                <from>abs($intVar + number('2'))</from>
+                <from>abs(xs:integer($intVar) + number('2'))</from>
                 <to variable="intVar"/>
             </copy>
             <copy ignoreMissingFromData="yes" ignoreUninitializedFromVariable="yes">
